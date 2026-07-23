@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multitalk"
+version = "0.1.0"
+description = "MultiTalk: Audio-driven multi-person conversational video generation (single-person mode)"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.4",
+    "torchvision",
+    "torchaudio",
+    "opencv-python-headless>=4.9",
+    "diffusers>=0.31.0",
+    "transformers>=4.49",
+    "tokenizers>=0.20.3",
+    "accelerate>=1.1.1",
+    "tqdm",
+    "imageio",
+    "imageio-ffmpeg",
+    "easydict",
+    "ftfy",
+    "scikit-image",
+    "numpy>=1.23.5,<2",
+    "pyloudnorm",
+    "librosa",
+    "soundfile",
+    "einops",
+    "safetensors",
+    "sentencepiece",
+]
+
+[tool.setuptools]
+py-modules = ["generate_multitalk", "generate_multitalk_lib"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["wan*", "src*", "kokoro*"]
