@@ -8,6 +8,7 @@ from src.audio_analysis.torch_utils import linear_interpolation
 # initialize our encoder with the pre-trained wav2vec 2.0 weights.
 class Wav2Vec2Model(Wav2Vec2Model):
     def __init__(self, config: Wav2Vec2Config):
+        config._attn_implementation = "eager"
         super().__init__(config)
 
     def forward(
@@ -20,7 +21,7 @@ class Wav2Vec2Model(Wav2Vec2Model):
         output_hidden_states=None,
         return_dict=None,
     ):
-        self.config.output_attentions = True
+        # self.config.output_attentions = True  # incompatible with sdpa
 
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -84,7 +85,7 @@ class Wav2Vec2Model(Wav2Vec2Model):
         output_hidden_states=None,
         return_dict=None,
     ):
-        self.config.output_attentions = True
+        # self.config.output_attentions = True  # incompatible with sdpa
 
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
