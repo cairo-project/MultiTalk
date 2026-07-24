@@ -1,6 +1,9 @@
 # Copyright 2024-2025 The Alibaba Wan Team Authors. All rights reserved.
 import gc
-from inspect import ArgSpec
+try:
+    from inspect import ArgSpec
+except ImportError:
+    from inspect import FullArgSpec as ArgSpec
 import logging
 import json
 import math
