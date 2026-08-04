@@ -40,8 +40,9 @@ def _get_embedding(human_speech, wav2vec_feature_extractor, audio_encoder):
     audio_feature = wav2vec_feature_extractor(
         human_speech, sampling_rate=16000, return_tensors="pt"
     ).input_values.to(audio_encoder.device)
+    seq_len = torch.tensor([audio_feature.shape[-1]], device=audio_encoder.device)
     with torch.no_grad():
-        embed = audio_encoder(audio_feature, output_hidden_states=True)
+        embed = audio_encoder(audio_feature, seq_len=seq_len, output_hidden_states=True)
     embed = embed.hidden_states
     audio_emb = torch.stack(embed, dim=1).squeeze(0).permute(2, 0, 1)
     return audio_emb
