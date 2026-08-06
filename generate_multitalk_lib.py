@@ -151,6 +151,9 @@ def generate_video(
         human_speech = _audio_prepare_single(driving_audio)
         audio_embedding = _get_embedding(human_speech, wav2vec_feature_extractor, audio_encoder)
 
+        # Determine total frames from audio embedding length (shape[0] = num video frames)
+        total_audio_frames = audio_embedding.shape[0]
+
         emb_path = os.path.join(tmpdir, "1.pt")
         sum_audio = os.path.join(tmpdir, "sum.wav")
         sf.write(sum_audio, human_speech, 16000)
@@ -164,7 +167,7 @@ def generate_video(
             "video_audio": sum_audio,
         }
 
-        logger.info("Generating video...")
+        logger.info(f"Generating video ({total_audio_frames} frames from audio)...")
         video = pipeline.generate(
             input_data,
             size_buckget=size,
@@ -176,7 +179,7 @@ def generate_video(
             audio_guide_scale=audio_guide_scale,
             seed=seed,
             offload_model=False,
-            max_frames_num=frame_num,
+            max_frames_num=total_audio_frames,
             color_correction_strength=0.0,
         )
 
